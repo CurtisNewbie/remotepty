@@ -1,0 +1,16 @@
+[project]
+name = "remotepty"
+description = "websocket based remote pty client library"
+version = "0.0.1"
+authors = [
+    { name = "yongj.zhuang" }
+]
+dependencies = [
+    "websockets"
+]
+
+[project.optional-dependencies]
+dev = [ ]
+
+[build-system]
+requires = ["setuptools", "wheel"]
