@@ -38,7 +38,7 @@ class Pinger():
 def ws_ping(ws: ClientConnection, ping_payload_func):
     ws.send(ping_payload_func())
 
-def ws_input(ws, inp: str, input_payload_func = None):
+def ws_input(ws, inp: str, input_payload_func):
     payload = input_payload_func(inp)
     return ws_send(ws, payload)
 
@@ -103,7 +103,7 @@ def attach_remote_pty(ws: ClientConnection, input_payload_func, ping_frequency=4
             ws_input(ws, ch, input_payload_func)
         except KeyboardInterrupt:
             try:
-                ws_input(ws, "\\u0003")
+                ws_input(ws, "\\u0003", input_payload_func)
             except ConnectionClosedError:
                 curses.endwin()
                 write_stdout(f"Connection closed")
