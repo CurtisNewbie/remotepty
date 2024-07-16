@@ -1,6 +1,8 @@
 # remotepty
 
-Very very basic client-side pty library written in Python. Similar to xterm.js (not really), but instead, a real terminal is used. Few adjustments are needed for the three functions below, these are used to build websocket messages. It's not guaranteed that it will work out of box (works for me), but at least it can be a starting point for you.
+Very basic client-side pty library written in Python. It was originally written to communicate with the remote server terminal using websocket. The default emulated terminal was implemented using xterm.js that runs in a browser, but I prefer a real terminal to a web browser, I just wrote one for myself.
+
+Few adjustments are needed for the three functions below, these are used to build websocket messages. It's not guaranteed to work out of box, but at least it can be a starting point for you.
 
 ```sh
 pip install websockets
