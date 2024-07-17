@@ -19,21 +19,20 @@ class Pinger():
         self.frequency = frequency
         self.ws = ws
         self.ping_payload_func = ping_payload_func
-        self.stopped = False
+        self.stopped = threading.Event()
 
     def start(self):
         threading.Thread(target=self.run).start()
 
     def run(self):
-        while not self.stopped:
-            time.sleep(self.frequency)
+        while not self.stopped.wait(self.frequency):
             try:
                 ws_ping(self.ws, self.ping_payload_func)
             except ConnectionClosedError:
                 return
 
     def stop(self):
-        self.stopped = True
+        self.stopped.set()
 
 def ws_ping(ws: ClientConnection, ping_payload_func):
     ws.send(ping_payload_func())
@@ -70,7 +69,10 @@ def attach_remote_pty(ws: ClientConnection, input_payload_func, ping_frequency=4
             pass
 
         if resize_payload_func: resize(stdscr, ws, resize_payload_func)
-        if ping_payload_func: ws_spawn_pinger(ws, freqency=ping_frequency, ping_payload_func=ping_payload_func).start()
+        pinger = None
+        if ping_payload_func:
+            pinger = ws_spawn_pinger(ws, freqency=ping_frequency, ping_payload_func=ping_payload_func)
+            pinger.start()
 
         def recv_loop():
             while True:
@@ -121,6 +123,7 @@ def attach_remote_pty(ws: ClientConnection, input_payload_func, ping_frequency=4
                 write_stdout(f"Fatal: {e}, type: {type(e)}")
                 return
     finally:
+        if pinger: pinger.stop()
         stdscr.keypad(0)
         curses.echo()
         curses.nocbreak()
