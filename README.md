@@ -29,3 +29,16 @@ remotepty.attach_remote_pty_url(
     resize_payload_func=resize_payload,
 )
 ```
+
+For example, in my project, the three functions above are implemented like this:
+
+```py
+def msg_payload(m):
+    return f'{{"type":"input", "input": "{m}"}}'
+
+def ping_payload():
+    return f'{{"type":"ping"}}'
+
+def resize_payload(cols, rows):
+    return f'{{"type":"resize","cols":{cols},"rows":{rows}}}'
+```
