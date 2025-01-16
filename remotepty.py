@@ -93,6 +93,7 @@ def attach_remote_pty(ws: ClientConnection, input_payload_func, ping_frequency=4
                 ch = chr(chn)
                 if ch == "\n": ch = "\\r"
                 elif ch == "\t": ch = "\\t"
+                elif ch == "\"": ch = "\\\""
                 elif chn == curses.KEY_UP: ch = "\\u001b[A"
                 elif chn == curses.KEY_LEFT: ch = "\\u001b[D"
                 elif chn == curses.KEY_RIGHT: ch = "\\u001b[C"
