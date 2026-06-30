@@ -105,8 +105,10 @@ def attach_remote_pty(ws: ClientConnection, input_payload_func, ping_frequency=4
                     write_stdout(f"chn: {chn}, ch: {ch}")
                     continue
                 elif curses.keyname(chn) == b"^B": ch = "\\u0002"
+                elif curses.keyname(chn) == b"^D": ch = "\\u0004"
                 elif curses.keyname(chn) == b"^F": ch = "\\u0006"
                 elif curses.keyname(chn) == b"^R": ch = "\\u0012"
+                elif curses.keyname(chn) == b"^U": ch = "\\u0015"
 
                 # write_stdout(f"key chn: {chn}, ch: {ch}, {curses.keyname(chn)}")
 
